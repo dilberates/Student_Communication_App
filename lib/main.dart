@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:student_communication_app/pages/%20messages_page.dart';
 import 'package:student_communication_app/pages/students_page.dart';
 import 'package:student_communication_app/pages/teachers_page.dart';
+import 'package:student_communication_app/repository/messages_repo.dart';
+import 'package:student_communication_app/repository/student_repo.dart';
+import 'package:student_communication_app/repository/teacher_repo.dart';
 
 void main() {
   runApp(const StudentApp());
@@ -23,16 +26,26 @@ class StudentApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+
+  MessageRepo messageRepo=MessageRepo();
+  StudentRepo studentRepo=StudentRepo();
+  TeacherRepo teacherRepo=TeacherRepo();
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(widget.title),
       ),
       drawer: Drawer(
         child: ListView(
@@ -45,30 +58,21 @@ class MyHomePage extends StatelessWidget {
               child: Text('Menü'),
             ),
             ListTile(
-              title: const Text('Öğrenciler'),
+              title:Text('${studentRepo.students.length} Öğrenci'),
               onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder:
-                        (context)=>StudentsPage()
-                    ));
+               goStudents(context);
               },
             ),
             ListTile(
-              title: const Text('Öğretmenler'),
+              title: Text('${teacherRepo.teachers.length} Öğretmen'),
               onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder:
-                        (context)=>TeachersPage()
-                    ));
+                goTeachers(context);
               },
             ),
             ListTile(
-              title: const Text('Mesajlar'),
+              title:Text('${messageRepo.messages.length} Yeni Mesaj'),
               onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder:
-                        (context)=>MessagesPage()
-                    ));
+               goMessages(context);
               },
             ),
           ],
@@ -84,10 +88,7 @@ class MyHomePage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 30.0,horizontal: 30.0)
               ),
                 onPressed:(){
-                  Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder:(context) => StudentsPage(),
-                      ));
+                  goStudents(context);
                 },
                 child: Text('Öğrenciler')
             ),
@@ -100,10 +101,7 @@ class MyHomePage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 30.0,horizontal: 30.0)
                 ),
                 onPressed:(){
-                  Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder:(context) => TeachersPage(),
-                      ));
+                  goTeachers(context);
                 },
                 child: Text('Öğretmenler')
             ),
@@ -116,10 +114,7 @@ class MyHomePage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 30.0,horizontal: 30.0)
                 ),
                 onPressed:(){
-                  Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder:(context) => MessagesPage(),
-                      ));
+                  goMessages(context);
                 },
                 child: Text('Mesajlar')
             ),
@@ -128,4 +123,32 @@ class MyHomePage extends StatelessWidget {
       ),
     );
   }
+  void goStudents(BuildContext context){
+    Navigator.of(context).push(
+        MaterialPageRoute(
+          builder:(context) {
+            return StudentsPage(studentRepo);
+          },
+        ));
+
+  }
+  void goTeachers(BuildContext context){
+    Navigator.of(context).push(
+        MaterialPageRoute(
+          builder:(context) {
+            return TeachersPage(teacherRepo);
+          },
+        ));
+
+  }
+  void goMessages(BuildContext context){
+    Navigator.of(context).push(
+        MaterialPageRoute(
+          builder:(context) {
+            return MessagesPage(messageRepo);
+          },
+        ));
+
+  }
 }
+

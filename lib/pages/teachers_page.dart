@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:student_communication_app/repository/teacher_repo.dart';
 
 class TeachersPage extends StatefulWidget {
-  const TeachersPage({Key? key}) : super(key: key);
+  final TeacherRepo teacherRepo;
+  const TeachersPage(this.teacherRepo, {Key? key}) : super(key: key);
 
   @override
   State<TeachersPage> createState() => _TeachersPageState();

@@ -1,9 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:student_communication_app/repository/messages_repo.dart';
 
 class MessagesPage extends StatefulWidget {
-  const MessagesPage({Key? key}) : super(key: key);
+  final MessageRepo messageRepo;
+  const MessagesPage(this.messageRepo, {Key? key}) : super(key: key);
 
   @override
   State<MessagesPage> createState() => _MessagesPageState();
@@ -18,27 +20,9 @@ class _MessagesPageState extends State<MessagesPage> {
           children:[ Expanded(
             child: ListView.builder(
               reverse: true,
-              itemBuilder: (context,index){
-              bool benMiyim =Random().nextBool();
-              return Align(
-                alignment: benMiyim ? Alignment.centerRight : Alignment.centerLeft,
-                child:Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Colors.grey,
-                          width: 2,
-                      ),
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                      color: Colors.white10
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(24.0),
-                        child: Text('mesaj mesaj mesaj mesaj mesaj mesaj mesaj')),
-                  ),
-                ),
-              );
+            itemCount:widget.messageRepo.messages.length,
+            itemBuilder: (context,index){
+              return MessagesView(widget.messageRepo.messages[widget.messageRepo.messages.length - index-1]);
               },
             ),
           ),
@@ -85,6 +69,36 @@ class _MessagesPageState extends State<MessagesPage> {
         ],
         ),
 
+    );
+  }
+}
+
+class MessagesView extends StatelessWidget {
+  final Message messag;
+  const MessagesView(this.messag, {
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: messag.sender=='Ali'? Alignment.centerRight : Alignment.centerLeft,
+      child:Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border.all(
+                color: Colors.grey,
+                width: 2,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(15)),
+            color: Colors.white10
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+              child: Text(messag.chat)),
+        ),
+      ),
     );
   }
 }
