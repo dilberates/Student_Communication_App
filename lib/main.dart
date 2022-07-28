@@ -34,6 +34,46 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(title),
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.black26,
+              ),
+              child: Text('Menü'),
+            ),
+            ListTile(
+              title: const Text('Öğrenciler'),
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder:
+                        (context)=>StudentsPage()
+                    ));
+              },
+            ),
+            ListTile(
+              title: const Text('Öğretmenler'),
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder:
+                        (context)=>TeachersPage()
+                    ));
+              },
+            ),
+            ListTile(
+              title: const Text('Mesajlar'),
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder:
+                        (context)=>MessagesPage()
+                    ));
+              },
+            ),
+          ],
+        ),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
