@@ -17,31 +17,56 @@ class _StudentsPageState extends State<StudentsPage> {
         body:
         Column(
             children:[
-              const PhysicalModel(
+               PhysicalModel(
                 color: Colors.white10,
                 elevation: 20,
                 child: Center(
                   child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 32.0,horizontal: 32.0),
-                      child: Text('10 Öğrenci')),
+                      child: Text('${widget.studentRepo.students.length} Öğrenci')),
                 ),
               ),
               Expanded(
                   child: ListView.separated(
-                      itemBuilder: (context,index) =>ListTile(
-                        title:Text('Dilber'),
-                        leading: Text('👧'),//👦
-                        trailing: IconButton(
-                            onPressed:() {
-                            },
-                            icon: Icon(Icons.favorite_border)
-                        ),
+                      itemBuilder: (context,index) =>StudentRow(
+                        widget.studentRepo.students[index],
+                        widget.studentRepo
                       ),
                       separatorBuilder: (context,index)=>const  Divider(),
-                      itemCount: 23)
+                      itemCount: widget.studentRepo.students.length,)
               ),
             ],
         ),
+    );
+  }
+}
+
+class StudentRow extends StatefulWidget {
+  final Student student;
+  final StudentRepo studentRepo;
+  const StudentRow(this.student,this.studentRepo , {
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<StudentRow> createState() => _StudentRowState();
+}
+
+class _StudentRowState extends State<StudentRow> {
+  @override
+  Widget build(BuildContext context) {
+    bool love=widget.studentRepo.youLove(widget.student);
+    return ListTile(
+      title:Text(widget.student.name+' '+widget.student.surname),
+      leading: IntrinsicWidth(child: Center(child: Text(widget.student.sex=='Female' ? '👧': '👦'))),
+      trailing: IconButton(
+          onPressed:() {
+            setState((){
+              widget.studentRepo.love(widget.student,!love);
+            });
+          },
+          icon: Icon( love ? Icons.favorite : Icons.favorite_border)
+      ),
     );
   }
 }

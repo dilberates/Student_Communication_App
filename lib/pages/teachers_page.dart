@@ -19,26 +19,39 @@ class _TeachersPageState extends State<TeachersPage> {
       body:
       Column(
         children:[
-          const PhysicalModel(
+          PhysicalModel(
             color: Colors.white10,
             elevation: 20,
             child: Center(
               child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 32.0,horizontal: 32.0),
-                  child: Text('10 Öğretmen')),
+                  child: Text('${widget.teacherRepo.teachers.length} Öğretmen')),
             ),
           ),
           Expanded(
               child: ListView.separated(
-                  itemBuilder: (context,index) =>ListTile(
-                    title:Text('Dilber hoca'),
-                    leading: Text('👧'),//👦
-                  ),
+                  itemBuilder: (context,index) =>TeacherRow(
+                      widget.teacherRepo.teachers[index]),
                   separatorBuilder: (context,index)=>const  Divider(),
-                  itemCount: 23)
+                  itemCount: widget.teacherRepo.teachers.length)
           ),
         ],
       ),
+    );
+  }
+}
+
+class TeacherRow extends StatelessWidget {
+  final Teacher teacher ;
+  const TeacherRow(this.teacher, {
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title:Text(teacher.name+' '+teacher.surname),
+      leading: IntrinsicWidth(child: Center(child: Text(teacher.sex=='Female'?'👧': '👦'))),
     );
   }
 }

@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
-              title:Text('${messageRepo.messages.length} Yeni Mesaj'),
+              title:Text('${messageRepo.newMessage} Yeni Mesaj'),
               onTap: () {
                goMessages(context);
               },
@@ -141,13 +141,17 @@ class _MyHomePageState extends State<MyHomePage> {
         ));
 
   }
-  void goMessages(BuildContext context){
-    Navigator.of(context).push(
+  Future<void> goMessages(BuildContext context) async {
+    await Navigator.of(context).push(
         MaterialPageRoute(
           builder:(context) {
             return MessagesPage(messageRepo);
           },
         ));
+    setState(()
+    {
+
+    });
 
   }
 }
