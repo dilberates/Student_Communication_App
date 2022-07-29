@@ -12,6 +12,13 @@ class MessagesPage extends StatefulWidget {
 }
 
 class _MessagesPageState extends State<MessagesPage> {
+
+  @override
+  void initState() {
+    widget.messageRepo.newMessage=0;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -4,6 +4,7 @@ class MessageRepo{
   Message('Merhaba', 'Ayşe',DateTime.now().subtract(const Duration(minutes: 2))),
   Message('asdsaddas', 'Ali', DateTime.now().subtract(const Duration(minutes: 1)))
  ];
+ int newMessage=3;
 }
  class Message{
  String chat;
