@@ -1,4 +1,7 @@
-class StudentRepo{
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+class StudentRepo extends ChangeNotifier{ //Hem değerler var hem onları değiştiren fonksiyonlar var.
  final students=[
    Student('Dilber', 'Kılıç', 22, 'Female'),
    Student('Ali', 'Kaya',6,'male'),
@@ -11,12 +14,19 @@ class StudentRepo{
     }else{
       favorite.remove(student);
     }
+    notifyListeners(); //Koymak zorunlu.
   }
+
 
  bool youLove(Student student) {
     return favorite.contains(student);
   }
 }
+
+final studentProvider=ChangeNotifierProvider(create: (ref) {
+  return StudentRepo();
+});
+
 class Student{
   String name ;
   String surname;

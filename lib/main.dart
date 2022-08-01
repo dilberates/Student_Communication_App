@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:student_communication_app/pages/%20messages_page.dart';
 import 'package:student_communication_app/pages/students_page.dart';
 import 'package:student_communication_app/pages/teachers_page.dart';
-import 'package:student_communication_app/repository/messages_repo.dart';
-import 'package:student_communication_app/repository/student_repo.dart';
-import 'package:student_communication_app/repository/teacher_repo.dart';
+
 
 void main() {
   runApp(const StudentApp());
@@ -26,23 +25,11 @@ class StudentApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends ConsumerWidget{
   const MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  MessageRepo messageRepo=MessageRepo();
-  StudentRepo studentRepo=StudentRepo();
-  TeacherRepo teacherRepo=TeacherRepo();
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -153,6 +140,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
     });
 
-  }
+
 }
 
