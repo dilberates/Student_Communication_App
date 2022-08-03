@@ -25,7 +25,7 @@ class StudentApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends ConsumerWidget{
+class MyHomePage extends Consu{
   const MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
   @override
