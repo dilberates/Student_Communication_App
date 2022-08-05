@@ -3,6 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:student_communication_app/pages/%20messages_page.dart';
 import 'package:student_communication_app/pages/students_page.dart';
 import 'package:student_communication_app/pages/teachers_page.dart';
+import 'package:student_communication_app/repository/messages_repo.dart';
+import 'package:student_communication_app/repository/student_repo.dart';
+import 'package:student_communication_app/repository/teacher_repo.dart';
 
 
 void main() {
@@ -25,9 +28,19 @@ class StudentApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends Consu{
+class MyHomePage extends StatefulWidget{
   const MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+
+  MessageRepo messageRepo = MessageRepo();
+  StudentRepo studentRepo = StudentRepo();
+  TeacherRepo teacherRepo = TeacherRepo();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,9 +58,9 @@ class MyHomePage extends Consu{
               child: Text('Menü'),
             ),
             ListTile(
-              title:Text('${studentRepo.students.length} Öğrenci'),
+              title: Text('${studentRepo.students.length} Öğrenci'),
               onTap: () {
-               goStudents(context);
+                goStudents(context);
               },
             ),
             ListTile(
@@ -57,9 +70,9 @@ class MyHomePage extends Consu{
               },
             ),
             ListTile(
-              title:Text('${messageRepo.newMessage} Yeni Mesaj'),
+              title: Text('${messageRepo.newMessage} Yeni Mesaj'),
               onTap: () {
-               goMessages(context);
+                goMessages(context);
               },
             ),
           ],
@@ -70,11 +83,12 @@ class MyHomePage extends Consu{
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.black26,
-                padding: const EdgeInsets.symmetric(vertical: 30.0,horizontal: 30.0)
-              ),
-                onPressed:(){
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.black26,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 30.0, horizontal: 30.0)
+                ),
+                onPressed: () {
                   goStudents(context);
                 },
                 child: Text('Öğrenciler')
@@ -85,9 +99,10 @@ class MyHomePage extends Consu{
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     primary: Colors.black26,
-                    padding: const EdgeInsets.symmetric(vertical: 30.0,horizontal: 30.0)
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 30.0, horizontal: 30.0)
                 ),
-                onPressed:(){
+                onPressed: () {
                   goTeachers(context);
                 },
                 child: Text('Öğretmenler')
@@ -98,9 +113,10 @@ class MyHomePage extends Consu{
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     primary: Colors.black26,
-                    padding: const EdgeInsets.symmetric(vertical: 30.0,horizontal: 30.0)
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 30.0, horizontal: 30.0)
                 ),
-                onPressed:(){
+                onPressed: () {
                   goMessages(context);
                 },
                 child: Text('Mesajlar')
@@ -110,36 +126,34 @@ class MyHomePage extends Consu{
       ),
     );
   }
-  void goStudents(BuildContext context){
+
+  void goStudents(BuildContext context) {
     Navigator.of(context).push(
         MaterialPageRoute(
-          builder:(context) {
+          builder: (context) {
             return StudentsPage(studentRepo);
           },
         ));
-
   }
-  void goTeachers(BuildContext context){
+
+  void goTeachers(BuildContext context) {
     Navigator.of(context).push(
         MaterialPageRoute(
-          builder:(context) {
+          builder: (context) {
             return TeachersPage(teacherRepo);
           },
         ));
-
   }
+
   Future<void> goMessages(BuildContext context) async {
     await Navigator.of(context).push(
         MaterialPageRoute(
-          builder:(context) {
+          builder: (context) {
             return MessagesPage(messageRepo);
           },
         ));
-    setState(()
-    {
+    setState(() {
 
     });
-
-
+  }
 }
-
