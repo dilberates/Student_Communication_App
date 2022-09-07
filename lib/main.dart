@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:student_communication_app/pages/%20messages_page.dart';
 import 'package:student_communication_app/pages/students_page.dart';
 import 'package:student_communication_app/pages/teachers_page.dart';
@@ -7,7 +8,7 @@ import 'package:student_communication_app/repository/student_repo.dart';
 import 'package:student_communication_app/repository/teacher_repo.dart';
 
 void main() {
-  runApp(const StudentApp());
+  runApp(ProviderScope(child:StudentApp()));
 }
 
 class StudentApp extends StatelessWidget {
@@ -26,26 +27,18 @@ class StudentApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends ConsumerWidget{
   const MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
-
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  MessageRepo messageRepo=MessageRepo();
-  StudentRepo studentRepo=StudentRepo();
-  TeacherRepo teacherRepo=TeacherRepo();
-
-  @override
-  Widget build(BuildContext context) {
-
+  Widget build(BuildContext context,WidgetRef ref ) {
+    final studentRepo=ref.watch(studentProvider);
+    var teacherRepo = ref.watch(teachersProvider);
+    final int a = ref.watch(newMessageProvider);
+    print(a);
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(title),
       ),
       drawer: Drawer(
         child: ListView(
@@ -70,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
-              title:Text('${messageRepo.newMessage} Yeni Mesaj'),
+              title:Text('${a} Yeni Mesaj'),
               onTap: () {
                goMessages(context);
               },
@@ -127,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.of(context).push(
         MaterialPageRoute(
           builder:(context) {
-            return StudentsPage(studentRepo);
+            return StudentsPage();
           },
         ));
 
@@ -136,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.of(context).push(
         MaterialPageRoute(
           builder:(context) {
-            return TeachersPage(teacherRepo);
+            return TeachersPage();
           },
         ));
 
@@ -145,13 +138,9 @@ class _MyHomePageState extends State<MyHomePage> {
     await Navigator.of(context).push(
         MaterialPageRoute(
           builder:(context) {
-            return MessagesPage(messageRepo);
+            return MessagesPage();
           },
         ));
-    setState(()
-    {
-
-    });
 
   }
 }

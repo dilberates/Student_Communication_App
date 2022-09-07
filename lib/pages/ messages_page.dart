@@ -1,35 +1,38 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:student_communication_app/repository/messages_repo.dart';
 
-class MessagesPage extends StatefulWidget {
-  final MessageRepo messageRepo;
-  const MessagesPage(this.messageRepo, {Key? key}) : super(key: key);
+import '../models/message.dart';
+
+class MessagesPage extends ConsumerStatefulWidget {
+  const MessagesPage( {Key? key}) : super(key: key);
 
   @override
-  State<MessagesPage> createState() => _MessagesPageState();
+  _MessagesPageState createState() => _MessagesPageState();
 }
 
-class _MessagesPageState extends State<MessagesPage> {
+class _MessagesPageState extends ConsumerState<MessagesPage> {
 
   @override
   void initState() {
-    widget.messageRepo.newMessage=0;
+    Future.delayed(Duration.zero).then((value) => ref.read(newMessageProvider.notifier).refresh());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var messageRepo = ref.watch(messagesProvider);
     return Scaffold(
         appBar: AppBar(title: Text('Mesajlar'),),
         body: Column(
           children:[ Expanded(
             child: ListView.builder(
               reverse: true,
-            itemCount:widget.messageRepo.messages.length,
+            itemCount:messageRepo.messages.length,
             itemBuilder: (context,index){
-              return MessagesView(widget.messageRepo.messages[widget.messageRepo.messages.length - index-1]);
+              return MessagesView(messageRepo.messages[messageRepo.messages.length - index-1]);
               },
             ),
           ),
