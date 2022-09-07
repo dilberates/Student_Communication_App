@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:student_communication_app/repository/teacher_repo.dart';
 
+import '../models/teacher.dart';
+
 class TeachersPage extends ConsumerWidget {
   const TeachersPage( {Key? key}) : super(key: key);
   @override
@@ -9,7 +11,19 @@ class TeachersPage extends ConsumerWidget {
     var teacherRepo = ref.watch(teachersProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Öğretmenler'),
+        title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+          const Text('Öğretmenler'),
+            Align(
+              alignment: Alignment.centerRight,
+            child: IconButton(onPressed:(){
+              ref.read(teachersProvider).download();
+            }, icon: Icon(
+              Icons.download
+            )),
+          )
+        ]),
       ),
       body:
       Column(

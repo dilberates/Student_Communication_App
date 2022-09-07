@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../models/student.dart';
+
 class StudentRepo extends ChangeNotifier{
  final students=[
    Student('Dilber', 'Kılıç', 22, 'Female'),
