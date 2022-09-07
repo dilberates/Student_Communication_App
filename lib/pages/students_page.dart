@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:student_communication_app/repository/student_repo.dart';
 
-class StudentsPage extends StatefulWidget {
-  final StudentRepo studentRepo;
-  const StudentsPage(this.studentRepo, {Key? key}) : super(key: key);
+class StudentsPage extends ConsumerWidget {
+  const StudentsPage( {Key? key}) : super(key: key);
 
-  @override
-  State<StudentsPage> createState() => _StudentsPageState();
-}
-
-class _StudentsPageState extends State<StudentsPage> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
+    var studentRepo = ref.watch(studentProvider);
     return Scaffold(
       appBar: AppBar(),
         body:
@@ -23,17 +18,16 @@ class _StudentsPageState extends State<StudentsPage> {
                 child: Center(
                   child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 32.0,horizontal: 32.0),
-                      child: Text('${widget.studentRepo.students.length} Öğrenci')),
+                      child: Text('${studentRepo.students.length} Öğrenci')),
                 ),
               ),
               Expanded(
                   child: ListView.separated(
                       itemBuilder: (context,index) =>StudentRow(
-                        widget.studentRepo.students[index],
-                        widget.studentRepo
+                        studentRepo.students[index],
                       ),
                       separatorBuilder: (context,index)=>const  Divider(),
-                      itemCount: widget.studentRepo.students.length,)
+                      itemCount: studentRepo.students.length,)
               ),
             ],
         ),
@@ -41,29 +35,22 @@ class _StudentsPageState extends State<StudentsPage> {
   }
 }
 
-class StudentRow extends StatefulWidget {
+class StudentRow extends ConsumerWidget{
   final Student student;
-  final StudentRepo studentRepo;
-  const StudentRow(this.student,this.studentRepo , {
+  const StudentRow(this.student, {
     Key? key,
   }) : super(key: key);
 
   @override
-  State<StudentRow> createState() => _StudentRowState();
-}
-
-class _StudentRowState extends State<StudentRow> {
-  @override
-  Widget build(BuildContext context) {
-    bool love=widget.studentRepo.youLove(widget.student);
+  Widget build(BuildContext context,WidgetRef ref) {
+    var studentRepo = ref.watch(studentProvider);
+    bool love=studentRepo.youLove(student);
     return ListTile(
-      title:Text(widget.student.name+' '+widget.student.surname),
-      leading: IntrinsicWidth(child: Center(child: Text(widget.student.sex=='Female' ? '👧': '👦'))),
+      title:Text(student.name+' '+student.surname),
+      leading: IntrinsicWidth(child: Center(child: Text(student.sex=='Female' ? '👧': '👦'))),
       trailing: IconButton(
           onPressed:() {
-            setState((){
-              widget.studentRepo.love(widget.student,!love);
-            });
+              ref.read(studentProvider).love(student,!love);
           },
           icon: Icon( love ? Icons.favorite : Icons.favorite_border)
       ),
