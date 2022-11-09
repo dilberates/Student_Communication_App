@@ -17,11 +17,7 @@ class TeachersPage extends ConsumerWidget {
           const Text('Öğretmenler'),
             Align(
               alignment: Alignment.centerRight,
-            child: IconButton(onPressed:(){
-              ref.read(teachersProvider).download();
-            }, icon: Icon(
-              Icons.download
-            )),
+            child: downloadButton(),
           )
         ]),
       ),
@@ -47,6 +43,28 @@ class TeachersPage extends ConsumerWidget {
         ],
       ),
     );
+  }
+}
+
+class downloadButton extends StatefulWidget {
+  const downloadButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<downloadButton> createState() => _downloadButtonState();
+}
+
+class _downloadButtonState extends State<downloadButton> {
+
+  bool isLoading=false;
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(onPressed:() async {
+       await ref.read(teachersProvider).download();
+    }, icon: Icon(
+      Icons.download
+    ));
   }
 }
 

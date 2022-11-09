@@ -2,24 +2,22 @@ import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:student_communication_app/models/teacher.dart';
-
+import 'package:http/http.dart' as http;
 class DataService {
 
+  final String baseUrl="https://636be6d3ad62451f9fbee1c7.mockapi.io/";
 
-  Teacher teacherDownload() {
-    const j ="""{
-    "ad": "Hakkı",
-    "soyad": "Alsın",
-    "yas": 23,
-    "cinsiyet": "Erkek"
-    }""";
+  Future<Teacher> teacherDownload() async {
 
-    final m = jsonDecode(j);
-    final teacher=Teacher.fromMap(m);
+    final http.Response response=await http.get(Uri.parse('$baseUrl/api/dilber/'));
 
-    return teacher;
+    if (response.statusCode == 200) {
+
+      return Teacher.fromMap(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load album ${response.statusCode}');
+    }
   }
-
 }
 
 final dataServiceProvider=Provider((ref) =>
