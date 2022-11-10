@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:student_communication_app/pages/teachers/teacherAddPage.dart';
 import 'package:student_communication_app/repository/teacher_repo.dart';
 
 import '../models/teacher.dart';
@@ -40,6 +41,16 @@ class TeachersPage extends ConsumerWidget {
                   itemCount: teacherRepo.teachers.length)),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+         final isBool= await Navigator.of(context)
+              .push<bool>(MaterialPageRoute(builder: (context) => TeachersHome()));
+         if(isBool==true){
+
+         }
+        },
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
@@ -70,11 +81,11 @@ class _downloadButtonState extends State<downloadButton> {
                   });
                   // TODO error
                   await ref.read(teachersProvider).download();
-                } catch(e){
+                } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(e.toString())),
                   );
-                }finally {
+                } finally {
                   setState(() {
                     isLoading = false;
                   });
@@ -96,9 +107,9 @@ class TeacherRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(teacher.name + ' ' + teacher.surname),
+      title: Text(teacher.ad + ' ' + teacher.soyad),
       leading: IntrinsicWidth(
-          child: Center(child: Text(teacher.sex == 'Female' ? '👧' : '👦'))),
+          child: Center(child: Text(teacher.cinsiyet == 'kız' ? '👧' : '👦'))),
     );
   }
 }

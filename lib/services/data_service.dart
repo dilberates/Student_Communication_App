@@ -18,6 +18,21 @@ class DataService {
       throw Exception('Öğretmen indirilemedi ! Status Code:  ${response.statusCode}');
     }
   }
+
+  Future<void> teacherAdd(Teacher teacher) async {
+   final response = await  http.post(Uri.parse('$baseUrl/Ogretmenler'),
+     headers: <String, String>{
+       'Content-Type': 'application/json; charset=UTF-8',
+     },
+     body: jsonEncode(teacher.toMap()),
+   );
+   if (response.statusCode == 100) {
+
+     return;
+   } else {
+     throw Exception('Öğretmen kayıt edilmedi ! Status Code:  ${response.statusCode}');
+   }
+  }
 }
 
 final dataServiceProvider=Provider((ref) =>
