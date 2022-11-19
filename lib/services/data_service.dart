@@ -11,7 +11,7 @@ class DataService {
 
     final http.Response response=await http.get(Uri.parse('$baseUrl/Ogretmenler/1'));
 
-    if (response.statusCode == 100) {
+    if (response.statusCode == 200) {
 
       return Teacher.fromMap(jsonDecode(response.body));
     } else {
@@ -26,12 +26,23 @@ class DataService {
      },
      body: jsonEncode(teacher.toMap()),
    );
-   if (response.statusCode == 100) {
+   if (response.statusCode == 200) {
 
      return;
    } else {
      throw Exception('Öğretmen kayıt edilmedi ! Status Code:  ${response.statusCode}');
    }
+  }
+
+  Future<List<Teacher>> teachersGet() async {
+    final http.Response response=await http.get(Uri.parse('$baseUrl/Ogretmenler/'));
+
+    if (response.statusCode == 200) {
+      final l=jsonDecode(response.body);
+      return l.map<Teacher>((e)=>Teacher.fromMap(e)).toList();
+    } else {
+      throw Exception('Öğretmen indirilemedi ! Status Code:  ${response.statusCode}');
+    }
   }
 }
 

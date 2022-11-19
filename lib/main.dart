@@ -57,7 +57,7 @@ class MyHomePage extends ConsumerWidget{
               },
             ),
             ListTile(
-              title: Text('${teacherRepo.teachers.length} Öğretmen'),
+              title: Text('${teacherRepo.teachers?.length} Öğretmen'),
               onTap: () {
                 goTeachers(context);
               },
