@@ -34,11 +34,25 @@ class TeachersPage extends ConsumerWidget {
             ),
           ),
           Expanded(
-              child: ListView.separated(
-                  itemBuilder: (context, index) =>
-                      TeacherRow(teacherRepo.teachers[index]),
-                  separatorBuilder: (context, index) => const Divider(),
-                  itemCount: teacherRepo.teachers.length)),
+            child: RefreshIndicator(
+              onRefresh: () async{
+                ref.refresh(teachersListProvider);
+              },
+              child: ref.watch(teachersListProvider).when(
+                  data: (List<Teacher>? data)=>ListView.separated(
+                      itemBuilder: (context, index) =>
+                          TeacherRow(data![index]),
+                      separatorBuilder: (context, index) => const Divider(),
+                      itemCount: data!.length),
+                  error: (error, stackTrace){
+                    return const Text('Error');
+                  },
+                  loading: (){
+                    return Center(child: CircularProgressIndicator(),);
+                  }
+              ),
+            ),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
