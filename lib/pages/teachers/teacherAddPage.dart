@@ -109,23 +109,38 @@ class _TeachersHomeState extends ConsumerState<TeachersHome> {
     );
   }
   Future<void> _add () async {
-    try {
-      setState(() {
-        isSaved = true;
-      });
-      await ref.read(dataServiceProvider).teacherAdd(Teacher.fromMap(girilen));
-      Navigator.of(context).pop(true);
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+    bool finish=false;
+    while(!finish){
+      try {
+        setState(() {
+          isSaved = true;
+        });
+        await save();
+        finish=true;
+        Navigator.of(context).pop(true);
+      } catch (e) {
+        final snackbar=ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString())),
+        );
+        await snackbar.closed;
 
-    } finally {
-      setState(() {
-       isSaved= false;
-      });
+      } finally {
+        setState(() {
+          isSaved= false;
+        });
+      }
     }
 
+
+  }
+int i=0;
+  Future<void> save() async {
+    i++;
+    if(i<3) {
+      throw "Kayıt yapılamadı";
+    }else{
+      await ref.read(dataServiceProvider).teacherAdd(Teacher.fromMap(girilen));
+    }
   }
 }
 
