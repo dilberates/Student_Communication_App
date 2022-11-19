@@ -1,10 +1,10 @@
 class Teacher{
-  String name ;
-  String surname;
-  int age;
-  String sex;
+  String ad;
+  String soyad;
+  int yas;
+  String cinsiyet;
 
-  Teacher(this.name,this.surname,this.age,this.sex);
+  Teacher(this.ad,this.soyad,this.yas,this.cinsiyet);
 
   Teacher.fromMap(Map<String,dynamic> m): this(
     m['ad'],
@@ -12,4 +12,15 @@ class Teacher{
     m['yas'],
     m['cinsiyet'],
   );
+
+ Map toMap() {
+    return {
+      'ad':ad,
+      'soyad':soyad,
+      'yas':yas,
+      'cinsiyet':cinsiyet
+    };
+  }
+
+
 }
